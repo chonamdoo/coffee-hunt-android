@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Coffee Hunt</string>
+    <string name="scan_qr_code">Scan QR-code</string>
+    <string name="grant_permissions">Grant permissions</string>
+    <string name="camera">Camera</string>
+    <string name="camera_permission_desc">The game needs camera permission to access device camera and allow seamless Augmented Reality experience.</string>
+    <string name="location">Location</string>
+    <string name="location_permission_desc">The game needs location permission to access and use information about your precised location.</string>
+    <string name="required_permissions">Required permissions</string>
+    <string name="camera_error">Camera error</string>
+    <string name="startGame">Start game</string>
+    <string name="your_score">Your Score</string>
+    <string name="coffee_grains">Coffee grains</string>
+    <string name="special_coffee_grains">Special coffee grains</string>
+    <string name="total">Total points</string>
+    <string name="your_best_results">Your best results</string>
+    <string name="logout_title">Are you sure you want to sign out?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+</resources>

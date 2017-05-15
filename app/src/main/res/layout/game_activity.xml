@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.indoorway.coffeehunt.game.GameActivity">
+
+    <FrameLayout
+        android:id="@+id/liveStreamContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <FrameLayout
+        android:layout_width="@dimen/map_size"
+        android:layout_height="@dimen/map_size"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/map_margin"
+        android:background="@drawable/map_border">
+
+        <com.indoorway.coffeehunt.game.minimap.MiniMapView
+            android:id="@+id/miniMapView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/map_border" />
+
+    </FrameLayout>
+
+    <com.indoorway.coffeehunt.game.ar.ARViewImpl
+        android:id="@+id/arView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <include layout="@layout/current_score_layout" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_margin="12dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/licencesButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            app:srcCompat="@drawable/licences_icon" />
+
+        <ImageView
+            android:id="@+id/logoutButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:padding="8dp"
+            android:src="@drawable/ic_logout" />
+
+    </LinearLayout>
+
+    <include
+        android:id="@+id/scoreViewContainer"
+        layout="@layout/score_view"
+        android:visibility="gone" />
+
+    <WebView
+        android:id="@+id/licencesView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone" />
+
+</FrameLayout>
