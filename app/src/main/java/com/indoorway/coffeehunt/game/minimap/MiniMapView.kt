@@ -42,7 +42,7 @@ class MiniMapView : IndoorwayMapView {
 
     var playerLayer: MarkersLayer? = null
 
-    fun initialize(onMapLoaded: () -> Unit) {
+    fun initialize(buildingUUID: String, mapUUID: String, onMapLoaded: () -> Unit) {
         customizeColors()
         setOnMapLoadCompletedListener {
             seedsLayer = markerControl.addLayer(11.0f)
@@ -58,7 +58,7 @@ class MiniMapView : IndoorwayMapView {
             playerLayer?.registerTexture(pointerTexture)
             monstersLayer?.registerTexture(monsterTexture)
         }
-        loadMap("TODO", "TODO")
+        loadMap(buildingUUID, mapUUID)
         displayControl.bringToFront()
     }
 

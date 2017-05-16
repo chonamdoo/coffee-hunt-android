@@ -6,10 +6,6 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
 import android.widget.Toast
-import io.reactivex.android.schedulers.AndroidSchedulers
-import kotlinx.android.synthetic.main.current_score_layout.*
-import kotlinx.android.synthetic.main.game_activity.*
-import kotlinx.android.synthetic.main.score_view.*
 import com.indoorway.coffeehunt.R
 import com.indoorway.coffeehunt.common.DI.provideLoginRepository
 import com.indoorway.coffeehunt.common.enterImmersiveFullScreenMode
@@ -26,10 +22,15 @@ import com.indoorway.coffeehunt.game.score.ScoreRepositoryImpl
 import com.indoorway.coffeehunt.game.score.ScoreView
 import com.indoorway.coffeehunt.game.score.toScoreText
 import com.indoorway.coffeehunt.login.LoginActivity
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import kotlinx.android.synthetic.main.current_score_layout.*
+import kotlinx.android.synthetic.main.game_activity.*
+import kotlinx.android.synthetic.main.score_view.*
 
 class GameActivity : RxActivity(), LiveStream.View, LogoutView {
 
-    private val gameMapView by lazy { GameMapView(miniMapView) }
+    private val gameMapView by lazy { GameMapView(miniMapView, Single.just("TODO" to "TODO")) }
     private val phases = DI.phases
     private val states = DI.states
     private val cameraController = CameraController(this)
@@ -96,7 +97,7 @@ class GameActivity : RxActivity(), LiveStream.View, LogoutView {
                 .subscribe { arView.showItems(it) }
     }
 
-    private fun subscribeMinimapToHeadingUpdates(){
+    private fun subscribeMinimapToHeadingUpdates() {
         DI.headings
                 .takeUntil(Lifecycle.PAUSE)
                 .subscribe { miniMapView.cameraControl.setMapRotation(it) }

@@ -2,15 +2,18 @@ package com.indoorway.coffeehunt.game.minimap
 
 import com.indoorway.coffeehunt.game.core.Game
 import com.indoorway.coffeehunt.game.core.Game.createEmptyState
+import io.reactivex.Single
 
-class GameMapView(private val map: MiniMapView) {
+class GameMapView(private val map: MiniMapView, mapConfig: Single<Pair<String, String>>) {
 
     private var displayedState = createEmptyState()
 
     init {
-        map.initialize {
-            display(createEmptyState())
-            display(displayedState)
+        mapConfig.subscribe { (buildingUUID, mapUUID) ->
+            map.initialize(buildingUUID, mapUUID) {
+                display(createEmptyState())
+                display(displayedState)
+            }
         }
     }
 
