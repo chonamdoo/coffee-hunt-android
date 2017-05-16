@@ -15,6 +15,7 @@ class GameMapView(private val map: MiniMapView, mapConfig: Single<Pair<String, S
                 display(displayedState)
             }
         }
+        map.displayControl.bringToFront()
     }
 
     fun display(state: Game.State) {

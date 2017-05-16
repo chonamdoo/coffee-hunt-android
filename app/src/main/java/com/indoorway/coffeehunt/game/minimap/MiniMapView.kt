@@ -59,7 +59,6 @@ class MiniMapView : IndoorwayMapView {
             monstersLayer?.registerTexture(monsterTexture)
         }
         loadMap(buildingUUID, mapUUID)
-        displayControl.bringToFront()
     }
 
     private fun customizeColors() {
