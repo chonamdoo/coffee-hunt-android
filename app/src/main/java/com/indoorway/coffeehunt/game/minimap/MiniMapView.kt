@@ -78,6 +78,7 @@ class MiniMapView : IndoorwayMapView {
     }
 
     fun addPlayer(player: Game.Player.Existent) {
+        cameraControl.setPosition(player.getCoordinates())
         playerLayer?.add(providePlayerDrawable(player.getCoordinates()))
     }
 
