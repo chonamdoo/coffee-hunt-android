@@ -1,8 +1,6 @@
 package com.indoorway.coffeehunt.game.minimap
 
-import android.graphics.Color
 import com.indoorway.android.common.sdk.model.Coordinates
-import com.indoorway.android.map.sdk.IndoorwayMapSdk
 import com.indoorway.coffeehunt.game.core.Game
 import com.indoorway.coffeehunt.game.core.Position
 
@@ -13,21 +11,9 @@ class GameMapView(private val map: MiniMapView) {
     private var displayedState = Game.State(Game.Player.None, emptyList(), emptySet(), Game.Board(Position(0.0, 0.0), emptyMap()))
 
     init {
-        customizeMapColors()
         map.initialize {
             ready = true
             lastState?.let { display(it) }
-        }
-    }
-
-    private fun customizeMapColors() {
-        IndoorwayMapSdk.getInstance().config.run {
-            defaultRoomBackgroundColor = Color.parseColor("#5A5F91")
-            defaultRoomOutlineColor = Color.parseColor("#242936")
-            textColor = Color.parseColor("#242936")
-            textShadowColor = Color.parseColor("#242936")
-            mapIndoorBackgroundColor = Color.parseColor("#3C3B47")
-            mapOutlineColor = Color.parseColor("#242936")
         }
     }
 

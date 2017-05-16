@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.util.AttributeSet
 import android.view.MotionEvent
 import com.indoorway.android.common.sdk.model.Coordinates
+import com.indoorway.android.map.sdk.IndoorwayMapSdk
 import com.indoorway.android.map.sdk.view.IndoorwayMapView
 import com.indoorway.android.map.sdk.view.drawable.figures.DrawableCircle
 import com.indoorway.android.map.sdk.view.drawable.figures.DrawableIcon
@@ -42,6 +43,7 @@ class MiniMapView : IndoorwayMapView {
     var playerLayer: MarkersLayer? = null
 
     fun initialize(onMapLoaded: () -> Unit) {
+        customizeColors()
         setOnMapLoadCompletedListener {
             seedsLayer = markerControl.addLayer(11.0f)
             monstersLayer = markerControl.addLayer(12.0f)
@@ -58,6 +60,17 @@ class MiniMapView : IndoorwayMapView {
         }
         loadMap("TODO", "TODO")
         displayControl.bringToFront()
+    }
+
+    private fun customizeColors() {
+        IndoorwayMapSdk.getInstance().config.run {
+            defaultRoomBackgroundColor = Color.parseColor("#5A5F91")
+            defaultRoomOutlineColor = Color.parseColor("#242936")
+            textColor = Color.parseColor("#242936")
+            textShadowColor = Color.parseColor("#242936")
+            mapIndoorBackgroundColor = Color.parseColor("#3C3B47")
+            mapOutlineColor = Color.parseColor("#242936")
+        }
     }
 
     fun removePlayer() {
