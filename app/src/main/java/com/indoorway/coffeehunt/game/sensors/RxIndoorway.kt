@@ -44,17 +44,20 @@ object RxIndoorway {
                     .logEvents("RX LOC SDK")
                     .share()
 
-    private val buildingApiMapObjects = Single.create<IndoorwayMap> { emitter ->
-        val sdk = IndoorwayMapSdk.getInstance()
-        sdk.buildingsApi.getMapObjects("TODO", "TODO")
-                .setOnCompletedListener<IndoorwayTask<IndoorwayMap>> {
-                    emitter.onSuccess(it)
+    private val buildingApiMapObjects =
+            Single.just("" to "").flatMap { (buildingUUID, mapUUID) ->
+                Single.create<IndoorwayMap> { emitter ->
+                    val sdk = IndoorwayMapSdk.getInstance()
+                    sdk.buildingsApi.getMapObjects(buildingUUID, mapUUID)
+                            .setOnCompletedListener<IndoorwayTask<IndoorwayMap>> {
+                                emitter.onSuccess(it)
+                            }
+                            .setOnFailedListener<IndoorwayTask<IndoorwayMap>> {
+                                emitter.onError(IndoorwayException("Getting map objects failed", it as Throwable))
+                            }
+                            .execute()
                 }
-                .setOnFailedListener<IndoorwayTask<IndoorwayMap>> {
-                    emitter.onError(IndoorwayException("Getting map objects failed", it as Throwable))
-                }
-                .execute()
-    }
+            }
 
     private val buildingApiPaths = buildingApiMapObjects
             .map { it.paths }
