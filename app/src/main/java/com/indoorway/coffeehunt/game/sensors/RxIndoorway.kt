@@ -44,8 +44,10 @@ object RxIndoorway {
                     .logEvents("RX LOC SDK")
                     .share()
 
+    val mapConfig = Single.just("" to "")
+
     private val buildingApiMapObjects =
-            Single.just("" to "").flatMap { (buildingUUID, mapUUID) ->
+            mapConfig.flatMap { (buildingUUID, mapUUID) ->
                 Single.create<IndoorwayMap> { emitter ->
                     val sdk = IndoorwayMapSdk.getInstance()
                     sdk.buildingsApi.getMapObjects(buildingUUID, mapUUID)

@@ -21,8 +21,8 @@ import com.indoorway.coffeehunt.game.score.ScoreController
 import com.indoorway.coffeehunt.game.score.ScoreRepositoryImpl
 import com.indoorway.coffeehunt.game.score.ScoreView
 import com.indoorway.coffeehunt.game.score.toScoreText
+import com.indoorway.coffeehunt.game.sensors.RxIndoorway
 import com.indoorway.coffeehunt.login.LoginActivity
-import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.current_score_layout.*
 import kotlinx.android.synthetic.main.game_activity.*
@@ -30,7 +30,7 @@ import kotlinx.android.synthetic.main.score_view.*
 
 class GameActivity : RxActivity(), LiveStream.View, LogoutView {
 
-    private val gameMapView by lazy { GameMapView(miniMapView, Single.just("TODO" to "TODO")) }
+    private val gameMapView by lazy { GameMapView(miniMapView, RxIndoorway.mapConfig) }
     private val phases = DI.phases
     private val states = DI.states
     private val cameraController = CameraController(this)
