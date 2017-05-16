@@ -46,7 +46,7 @@ object RxIndoorway {
 
     private val buildingApiMapObjects = Single.create<IndoorwayMap> { emitter ->
         val sdk = IndoorwayMapSdk.getInstance()
-        sdk.buildingsApi.getMapObjects("", "")
+        sdk.buildingsApi.getMapObjects("TODO", "TODO")
                 .setOnCompletedListener<IndoorwayTask<IndoorwayMap>> {
                     emitter.onSuccess(it)
                 }
