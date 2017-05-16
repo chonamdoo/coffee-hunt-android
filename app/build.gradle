@@ -30,9 +30,6 @@ android {
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled = true
-        def config = loadBuildConfig("buildConfig.properties")
-        buildConfigField 'String', 'BUILDING_UUID', config.getProperty("BUILDING_UUID")
-        buildConfigField 'String', 'MAP_UUID', config.getProperty("MAP_UUID")
     }
 
     buildTypes {

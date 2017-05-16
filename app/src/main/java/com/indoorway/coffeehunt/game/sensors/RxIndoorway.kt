@@ -13,11 +13,10 @@ import com.indoorway.android.location.sdk.exceptions.location.LocationDisabledEx
 import com.indoorway.android.location.sdk.service.PositioningServiceConnection
 import com.indoorway.android.map.sdk.IndoorwayMapSdk
 import com.indoorway.android.map.sdk.model.IndoorwayMap
+import com.indoorway.coffeehunt.common.logEvents
+import com.indoorway.coffeehunt.game.DI
 import io.reactivex.Observable
 import io.reactivex.Single
-import com.indoorway.coffeehunt.BuildConfig
-import com.indoorway.coffeehunt.game.DI
-import com.indoorway.coffeehunt.common.logEvents
 
 object RxIndoorway {
 
@@ -47,7 +46,7 @@ object RxIndoorway {
 
     private val buildingApiMapObjects = Single.create<IndoorwayMap> { emitter ->
         val sdk = IndoorwayMapSdk.getInstance()
-        sdk.buildingsApi.getMapObjects(BuildConfig.BUILDING_UUID, BuildConfig.MAP_UUID)
+        sdk.buildingsApi.getMapObjects("", "")
                 .setOnCompletedListener<IndoorwayTask<IndoorwayMap>> {
                     emitter.onSuccess(it)
                 }

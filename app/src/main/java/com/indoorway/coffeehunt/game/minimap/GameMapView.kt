@@ -52,7 +52,7 @@ class GameMapView(private val map: MiniMapView) {
                 playerLayer.registerTexture(pointerTexture)
                 monstersLayer.registerTexture(monsterTexture)
             }
-            loadMap(BuildConfig.BUILDING_UUID, BuildConfig.MAP_UUID)
+            loadMap("", "")
             displayControl.bringToFront()
         }
     }

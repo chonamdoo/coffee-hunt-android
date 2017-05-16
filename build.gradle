@@ -19,9 +19,3 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
-
-def loadBuildConfig(String propertiesFilePath) {
-    def props = new Properties()
-    file(propertiesFilePath).withInputStream { props.load(it) }
-    return props
-}
