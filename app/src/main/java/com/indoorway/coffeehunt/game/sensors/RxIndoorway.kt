@@ -44,7 +44,10 @@ object RxIndoorway {
                     .logEvents("RX LOC SDK")
                     .share()
 
-    val mapConfig = Single.just("" to "")
+    val mapConfig = locationSdkChanges
+            .ofType(LocationSdkChange.PositionChange::class.java)
+            .firstOrError()
+            .map { it.position.buildingUuid to it.position.mapUuid }
 
     private val buildingApiMapObjects =
             mapConfig.flatMap { (buildingUUID, mapUUID) ->
