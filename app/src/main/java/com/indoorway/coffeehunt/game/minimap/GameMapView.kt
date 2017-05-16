@@ -2,29 +2,24 @@ package com.indoorway.coffeehunt.game.minimap
 
 import com.indoorway.android.common.sdk.model.Coordinates
 import com.indoorway.coffeehunt.game.core.Game
-import com.indoorway.coffeehunt.game.core.Position
+import com.indoorway.coffeehunt.game.core.Game.createEmptyState
 
 class GameMapView(private val map: MiniMapView) {
 
-    private var ready = false
-    private var lastState: Game.State? = null
-    private var displayedState = Game.State(Game.Player.None, emptyList(), emptySet(), Game.Board(Position(0.0, 0.0), emptyMap()))
+    private var displayedState = createEmptyState()
 
     init {
         map.initialize {
-            ready = true
-            lastState?.let { display(it) }
+            display(createEmptyState())
+            display(displayedState)
         }
     }
 
     fun display(state: Game.State) {
-        lastState = state
-        if (ready) {
-            updateUserPosition(state)
-            updateMonsters(displayedState.monsters, state.monsters)
-            updateSeeds(displayedState.seeds, state.seeds)
-            displayedState = state
-        }
+        updateUserPosition(state)
+        updateMonsters(displayedState.monsters, state.monsters)
+        updateSeeds(displayedState.seeds, state.seeds)
+        displayedState = state
     }
 
     private fun updateUserPosition(state: Game.State) {
@@ -65,4 +60,5 @@ class GameMapView(private val map: MiniMapView) {
         newMonsters
                 .forEach { map.addMonster(it) }
     }
+
 }

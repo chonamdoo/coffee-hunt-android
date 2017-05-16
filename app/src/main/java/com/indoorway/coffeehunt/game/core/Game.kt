@@ -104,6 +104,9 @@ object Game {
     }
 
     private fun <T> List<T>.getRandomOrDefault(default: T) = if (size == 0) default else get(RANDOM.nextInt(size))
+
+    fun createEmptyState() =
+            Game.State(Game.Player.None, emptyList(), emptySet(), Game.Board(Position(0.0, 0.0), emptyMap()))
 }
 
 typealias Progress = Int // 0..100
