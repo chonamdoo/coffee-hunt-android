@@ -5,10 +5,10 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import io.reactivex.Observable
-import io.reactivex.ObservableEmitter
 import com.indoorway.coffeehunt.common.slowdown
 import com.indoorway.coffeehunt.game.ar.PitchEvents
+import io.reactivex.Observable
+import io.reactivex.ObservableEmitter
 
 fun getPitchEvents(applicationContext: Context): PitchEvents =
         getSensorEvents(applicationContext, Sensor.TYPE_GRAVITY)
@@ -40,7 +40,7 @@ private fun getSensorEvents(context: Context, sensorType: Int): Observable<Senso
         val sensor = sensorManager.getDefaultSensor(sensorType)
         val sensorEventListener = createSensorEventListener(emitter)
         emitter.setCancellable { sensorManager.unregisterListener(sensorEventListener, sensor) }
-        sensorManager.registerListener(sensorEventListener, sensor, SensorManager.SENSOR_DELAY_NORMAL)
+        sensorManager.registerListener(sensorEventListener, sensor, SensorManager.SENSOR_DELAY_GAME)
     }
 }
 

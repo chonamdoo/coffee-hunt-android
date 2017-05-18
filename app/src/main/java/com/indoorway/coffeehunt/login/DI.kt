@@ -6,7 +6,7 @@ import com.indoorway.coffeehunt.game.DI
 
 object DI {
 
-    var provideOpenQRCodeScreenAction: (Activity, Int) -> Unit = IndoorwayQrCodeSdk.getInstance()::startQrCodeActivity
+    var provideOpenQRCodeScreenAction: (Activity, Int) -> Unit = IndoorwayQrCodeSdk.instance::startQrCodeActivity
 
     var provideIndoorwayInitializer: () -> IndoorwayInitializer = { AndroidIndoorwayInitializer(DI.provideApplicationContext()) }
 }

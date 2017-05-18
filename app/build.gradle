@@ -1,8 +1,8 @@
 buildscript {
     ext.espresso_version = '2.2.2'
-    ext.support_version = '25.3.1'
+    ext.support_version = '26.0.0-alpha1'
     ext.support_multidex_version = '1.0.1'
-    ext.indoorway_version = '1.3.0'
+    ext.indoorway_version = '1.4.1-5'
     ext.commons_version = '0.0.12'
     ext.rxjava_version = '2.0.8'
     ext.rxandroid_version = '2.0.1'
@@ -16,15 +16,15 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 26
+    buildToolsVersion "25.0.3"
     packagingOptions {
         pickFirst 'META-INF/LICENSE'
     }
     defaultConfig {
         applicationId "com.indoorway.coffeehunt"
         minSdkVersion 19
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         vectorDrawables.useSupportLibrary = true
@@ -51,12 +51,11 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile "io.reactivex.rxjava2:rxjava:$rxjava_version"
     compile "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
-    compile("com.indoorway.android:common:$indoorway_version") {
-        changing = true
-    }
+    compile "com.indoorway.android:common:$indoorway_version"
     compile "com.indoorway.android:map:$indoorway_version"
     compile "com.indoorway.android:location:$indoorway_version"
     compile "com.indoorway.android:qrcode:$indoorway_version"
+    compile "com.indoorway.android:fragments:$indoorway_version"
     compile "com.elpassion.android.commons:shared-preferences:$commons_version"
     testCompile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     testCompile "junit:junit:$junit_version"
@@ -86,4 +85,5 @@ if(file("../local.gradle").exists()) {
 repositories {
     mavenCentral()
     maven { url 'https://indoorway.com/sdk/android/repo/maven/' }
+    maven { url 'https://maven.google.com' }
 }

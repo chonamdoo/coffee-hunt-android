@@ -2,15 +2,19 @@ package com.indoorway.coffeehunt.game.sensors
 
 import android.Manifest
 import android.widget.Toast
-import com.indoorway.android.common.exceptions.http.HttpException
 import com.indoorway.android.common.sdk.exceptions.MissingPermissionException
+import com.indoorway.android.common.sdk.listeners.generic.Action1
+import com.indoorway.android.common.sdk.listeners.position.OnHeadingChangedListener
+import com.indoorway.android.common.sdk.listeners.position.OnPitchChangedListener
+import com.indoorway.android.common.sdk.listeners.position.OnPositionChangedListener
+import com.indoorway.android.common.sdk.listeners.position.OnRollChangedListener
+import com.indoorway.android.common.sdk.model.IndoorwayNode
 import com.indoorway.android.common.sdk.model.IndoorwayPosition
-import com.indoorway.android.common.sdk.task.IndoorwayTask
+import com.indoorway.android.common.tasks.exceptions.HttpException
 import com.indoorway.android.location.sdk.IndoorwayLocationSdk
 import com.indoorway.android.location.sdk.exceptions.bluetooth.BLENotSupportedException
 import com.indoorway.android.location.sdk.exceptions.bluetooth.BluetoothDisabledException
 import com.indoorway.android.location.sdk.exceptions.location.LocationDisabledException
-import com.indoorway.android.location.sdk.service.PositioningServiceConnection
 import com.indoorway.android.map.sdk.IndoorwayMapSdk
 import com.indoorway.android.map.sdk.model.IndoorwayMap
 import com.indoorway.coffeehunt.common.logEvents
@@ -23,17 +27,21 @@ object RxIndoorway {
     private sealed class LocationSdkChange {
         data class PositionChange(val position: IndoorwayPosition) : LocationSdkChange()
         data class HeadingChange(val heading: Float) : LocationSdkChange()
+        data class PitchChange(val pitch: Float) : LocationSdkChange()
+        data class RollChange(val roll: Float) : LocationSdkChange()
     }
 
     private val locationSdkChanges =
             Observable.create<LocationSdkChange> {
                 val emitter = it.serialize()
-                val sdk = IndoorwayLocationSdk.getInstance()
+                val sdk = IndoorwayLocationSdk.instance
                 val connection = sdk.positioningServiceConnection
                 val context = DI.provideApplicationContext()
                 emitter.setCancellable { connection.stop(context) }
-                connection.setOnPositionChangedListener<PositioningServiceConnection> { emitter.onNext(LocationSdkChange.PositionChange(it)) }
-                connection.setOnHeadingChangedListener<PositioningServiceConnection> { emitter.onNext(LocationSdkChange.HeadingChange(it)) }
+                connection.onPositionChangedListener = OnPositionChangedListener { emitter.onNext(LocationSdkChange.PositionChange(it)) }
+                connection.onHeadingChangedListener = OnHeadingChangedListener { emitter.onNext(LocationSdkChange.HeadingChange(it)) }
+                connection.onPitchChangedListener = OnPitchChangedListener { emitter.onNext(LocationSdkChange.PitchChange(it)) }
+                connection.onRollChangedListener = OnRollChangedListener { emitter.onNext(LocationSdkChange.RollChange(it)) }
                 try {
                     connection.start(context)
                 } catch (e: Exception) {
@@ -44,7 +52,7 @@ object RxIndoorway {
                     .logEvents("RX LOC SDK")
                     .share()
 
-    val mapConfig = locationSdkChanges
+    val mapConfig: Single<Pair<String, String>> = locationSdkChanges
             .ofType(LocationSdkChange.PositionChange::class.java)
             .firstOrError()
             .map { it.position.buildingUuid to it.position.mapUuid }
@@ -52,15 +60,17 @@ object RxIndoorway {
     private val buildingApiMapObjects =
             mapConfig.flatMap { (buildingUUID, mapUUID) ->
                 Single.create<IndoorwayMap> { emitter ->
-                    val sdk = IndoorwayMapSdk.getInstance()
-                    sdk.buildingsApi.getMapObjects(buildingUUID, mapUUID)
-                            .setOnCompletedListener<IndoorwayTask<IndoorwayMap>> {
-                                emitter.onSuccess(it)
-                            }
-                            .setOnFailedListener<IndoorwayTask<IndoorwayMap>> {
-                                emitter.onError(IndoorwayException("Getting map objects failed", it as Throwable))
-                            }
-                            .execute()
+                    val sdk = IndoorwayMapSdk.instance
+                    sdk.buildingsApi.getMapObjects(buildingUUID, mapUUID).apply {
+                        setOnCompletedListener(Action1 {
+                            emitter.onSuccess(it)
+                        })
+                        setOnFailedListener(Action1 {
+                            emitter.onError(IndoorwayException("Getting map objects failed", it as Throwable))
+                        })
+                        execute()
+                    }
+
                 }
             }
 
@@ -71,15 +81,23 @@ object RxIndoorway {
             .logEvents("RX MAP SDK")
             .share()
 
-    fun getUserPositionsObservable() = locationSdkChanges
+    fun getUserPositionsObservable(): Observable<IndoorwayPosition> = locationSdkChanges
             .ofType(LocationSdkChange.PositionChange::class.java)
             .map { it.position }
 
-    fun getHeadingObservable() = locationSdkChanges
+    fun getHeadingObservable(): Observable<Double> = locationSdkChanges
             .ofType(LocationSdkChange.HeadingChange::class.java)
-            .map { it.heading }
+            .map { it.heading.toDouble() }
 
-    fun getPathsObservable() = buildingApiPaths
+    fun getPitchObservable(): Observable<Double> = locationSdkChanges
+            .ofType(LocationSdkChange.PitchChange::class.java)
+            .map { Math.toRadians(it.pitch.toDouble() + 90.0) }
+
+    fun getRollObservable(): Observable<Double> = locationSdkChanges
+            .ofType(LocationSdkChange.RollChange::class.java)
+            .map { Math.toRadians(it.roll.toDouble()) }
+
+    fun getPathsObservable(): Observable<List<IndoorwayNode>> = buildingApiPaths
 
     private fun showToast(message: String) {
         val context = DI.provideApplicationContext()

@@ -6,4 +6,12 @@
     <color name="colorAccent">#4CAF50</color>
     <color name="blue">#00AEEF</color>
     <color name="yellow">#FFC100</color>
+
+    <!-- Indoorway map colors -->
+    <color name="indoorway_map_text_color">#242936</color>
+    <color name="indoorway_map_text_shadow">#242936</color>
+    <color name="indoorway_map_indoor_background">#3C3B47</color>
+    <color name="indoorway_map_outline">#242936</color>
+    <color name="indoorway_map_default_room_background">#5A5F91</color>
+    <color name="indoorway_map_default_room_outline">#242936</color>
 </resources>

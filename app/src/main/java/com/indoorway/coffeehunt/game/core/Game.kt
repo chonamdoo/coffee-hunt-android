@@ -113,4 +113,4 @@ typealias Progress = Int // 0..100
 
 typealias Neighbours = List<Game.Node>
 
-val Game.State.items get() = concat(seeds, monsters)
+val Game.State.items: Iterable<Game.Item> get() = concat(seeds, monsters)

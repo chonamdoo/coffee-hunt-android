@@ -7,6 +7,11 @@ import android.os.Build
 import android.support.test.filters.SdkSuppress
 import android.support.test.rule.ActivityTestRule
 import com.elpassion.android.commons.espresso.*
+import com.indoorway.coffeehunt.R
+import com.indoorway.coffeehunt.common.intent.checkNoIntent
+import com.indoorway.coffeehunt.common.stubGameActivityIntentResponseToCanceled
+import com.indoorway.coffeehunt.game.CompassCalibrationActivity
+import com.indoorway.coffeehunt.game.GameActivity
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
@@ -15,10 +20,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import com.indoorway.coffeehunt.R
-import com.indoorway.coffeehunt.common.intent.checkNoIntent
-import com.indoorway.coffeehunt.common.stubGameActivityIntentResponseToCanceled
-import com.indoorway.coffeehunt.game.GameActivity
 
 @SuppressLint("NewApi")
 @SdkSuppress(minSdkVersion = Build.VERSION_CODES.M)
@@ -85,11 +86,11 @@ class PermissionsActivity_AfterM_Test {
     }
 
     @Test
-    fun shouldOpenGameScreenWhenAllPermissionsGranted() {
+    fun shouldOpenCallibrateCompassScreenWhenAllPermissionsGranted() {
         stubNoPermissions().andAllow()
         lunchActivity()
         onId(R.id.grantPermissionsButton).click()
-        checkIntent(GameActivity::class.java)
+        checkIntent(CompassCalibrationActivity::class.java)
     }
 
     @Test

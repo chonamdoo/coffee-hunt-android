@@ -5,11 +5,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.indoorway.android.qrcode.sdk.IndoorwayQrCodeSdk
-import kotlinx.android.synthetic.main.login_activity.*
 import com.indoorway.coffeehunt.R
 import com.indoorway.coffeehunt.common.DI.provideLoginRepository
 import com.indoorway.coffeehunt.common.enterImmersiveFullScreenMode
 import com.indoorway.coffeehunt.permission.PermissionsActivity
+import kotlinx.android.synthetic.main.login_activity.*
 
 class LoginActivity : AppCompatActivity(), Login.View {
 
@@ -29,7 +29,7 @@ class LoginActivity : AppCompatActivity(), Login.View {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == RC_QR_SCAN && resultCode == Activity.RESULT_OK && data != null) {
-            IndoorwayQrCodeSdk.getInstance().getQrCodeFromIntent(data)?.let {
+            IndoorwayQrCodeSdk.instance.getQrCodeFromIntent(data)?.let {
                 controller.onToken(it)
             }
         }

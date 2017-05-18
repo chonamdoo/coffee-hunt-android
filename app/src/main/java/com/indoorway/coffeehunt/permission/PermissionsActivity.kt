@@ -3,16 +3,16 @@ package com.indoorway.coffeehunt.permission
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import kotlinx.android.synthetic.main.permissions_activity.*
 import com.indoorway.coffeehunt.R
-import com.indoorway.coffeehunt.game.GameActivity
+import com.indoorway.coffeehunt.game.CompassCalibrationActivity
 import com.indoorway.coffeehunt.permission.DI.providePermissionsIteractor
+import kotlinx.android.synthetic.main.permissions_activity.*
 
 class PermissionsActivity : AppCompatActivity() {
 
     private val permissionsController = PermissionsController(
             providePermissionsIteractor(this),
-            { openGameScreen() })
+            { openCompassCalibrationActivity() })
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,8 +28,8 @@ class PermissionsActivity : AppCompatActivity() {
         permissionsController.onRequestPermissionsResult(requestCode, grantResults)
     }
 
-    private fun openGameScreen() {
-        startActivity(Intent(this, GameActivity::class.java))
+    private fun openCompassCalibrationActivity() {
+        startActivity(Intent(this, CompassCalibrationActivity::class.java))
         finish()
     }
 }

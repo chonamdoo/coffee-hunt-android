@@ -1,17 +1,17 @@
 package com.indoorway.coffeehunt.sdk
 
 import android.Manifest
-import com.indoorway.android.common.exceptions.http.HttpException
 import com.indoorway.android.common.sdk.exceptions.MissingPermissionException
+import com.indoorway.android.common.tasks.exceptions.HttpException
 import com.indoorway.android.location.sdk.exceptions.bluetooth.BLENotSupportedException
 import com.indoorway.android.location.sdk.exceptions.bluetooth.BluetoothDisabledException
 import com.indoorway.android.location.sdk.exceptions.location.LocationDisabledException
+import com.indoorway.coffeehunt.game.sensors.IndoorwayException
+import com.indoorway.coffeehunt.game.sensors.catchExceptions
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import io.reactivex.Observable
 import org.junit.Test
-import com.indoorway.coffeehunt.game.sensors.IndoorwayException
-import com.indoorway.coffeehunt.game.sensors.catchExceptions
 
 class CatchIndoorwayExceptionsTest {
 

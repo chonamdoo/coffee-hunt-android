@@ -11,18 +11,18 @@ import com.elpassion.android.commons.espresso.checkIntent
 import com.elpassion.android.commons.espresso.click
 import com.elpassion.android.commons.espresso.onId
 import com.indoorway.android.qrcode.sdk.IndoorwayQrCodeSdk
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.whenever
-import org.junit.Assert.assertTrue
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
 import com.indoorway.coffeehunt.R
 import com.indoorway.coffeehunt.common.DI.provideLoginRepository
 import com.indoorway.coffeehunt.common.intent.checkNoIntent
 import com.indoorway.coffeehunt.common.stubPermissionActivityIntentResponseToCanceled
 import com.indoorway.coffeehunt.login.DI.provideOpenQRCodeScreenAction
 import com.indoorway.coffeehunt.permission.PermissionsActivity
+import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.whenever
+import org.junit.Assert.assertTrue
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
 
 class LoginActivityTest {
 
@@ -81,7 +81,7 @@ class LoginActivityTest {
     }
 
     private fun stubQRScannerToReturnToken(token: String) {
-        val intentWithToken = Intent().apply { IndoorwayQrCodeSdk.getInstance().addQrCodeToIntent(this, token) }
+        val intentWithToken = Intent().apply { IndoorwayQrCodeSdk.instance.addQrCodeToIntent(this, token) }
         provideOpenQRCodeScreenAction = returnIntentFromQRScanner(Activity.RESULT_OK, intentWithToken)
     }
 

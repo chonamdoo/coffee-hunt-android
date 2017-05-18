@@ -2,10 +2,10 @@ package com.indoorway.coffeehunt.game.camera
 
 import android.content.Context
 import android.hardware.Camera
-import io.reactivex.Observable
-import io.reactivex.Observable.just
 import com.indoorway.coffeehunt.game.ar.AR
 import com.indoorway.coffeehunt.game.camera.LiveStream.CameraWrapper
+import io.reactivex.Observable
+import io.reactivex.Observable.just
 
 class CameraWrapperImpl(val context: Context, val camera: Camera) : CameraWrapper {
 
@@ -21,7 +21,8 @@ class CameraWrapperImpl(val context: Context, val camera: Camera) : CameraWrappe
         return just(camera.parameters.run {
             AR.FieldOfView(
                     horizontalViewAngle = Math.toRadians(horizontalViewAngle.toDouble()),
-                    verticalViewAngle = Math.toRadians(verticalViewAngle.toDouble()))
+                    verticalViewAngle = Math.toRadians(verticalViewAngle.toDouble())
+            )
         })
     }
 }

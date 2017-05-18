@@ -90,8 +90,15 @@ class GameActivity : RxActivity(), LiveStream.View, LogoutView {
 
     private fun subscribeToItemsUpdates(cameraWrapper: LiveStream.CameraWrapper) {
         states
-                .map { it.items as Iterable<Game.Item> }
-                .toPositionOnScreen(DI.pitchEvents, DI.provideHeadingObservableInRadians(), states.map { it.board.center }, cameraWrapper.getFieldOfView(), DI.provideUserPositions())
+                .map { it.items }
+                .toPositionOnScreen(
+                        DI.pitchEvents,
+                        DI.provideHeadingObservableInRadians(),
+                        DI.rollEvents,
+                        states.map { it.board.center },
+                        cameraWrapper.getFieldOfView(),
+                        DI.provideUserPositions()
+                )
                 .takeUntil(Lifecycle.PAUSE)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { arView.showItems(it) }
@@ -100,7 +107,7 @@ class GameActivity : RxActivity(), LiveStream.View, LogoutView {
     private fun subscribeMinimapToHeadingUpdates() {
         DI.headings
                 .takeUntil(Lifecycle.PAUSE)
-                .subscribe { miniMapView.cameraControl.setMapRotation(it) }
+                .subscribe { miniMapView.cameraControl.setMapRotation(-it.toFloat()) }
     }
 
     override fun onPause() {

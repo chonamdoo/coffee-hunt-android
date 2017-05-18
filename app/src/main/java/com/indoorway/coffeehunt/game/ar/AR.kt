@@ -1,12 +1,14 @@
 package com.indoorway.coffeehunt.game.ar
 
 import android.graphics.*
-import io.reactivex.Observable
 import com.indoorway.coffeehunt.R
 import com.indoorway.coffeehunt.game.DI
 import com.indoorway.coffeehunt.game.core.Game
+import io.reactivex.Observable
 
 typealias PitchEvents = Observable<AngleInRads>
+
+typealias RollEvents = Observable<AngleInRads>
 
 typealias HeadingEvents = Observable<AngleInRads>
 
@@ -48,20 +50,23 @@ object AR {
     }
 
     fun draw(canvas: Canvas, bitmap: Bitmap, relativePositionOnScreen: RelativePositionOnScreen) {
-        val cx = (canvas.width / 2f).let { it - relativePositionOnScreen.width * it }
-        val cy = (canvas.height / 2f).let { it - relativePositionOnScreen.height * it }
+        val centerX = canvas.width / 2f
+        val centerY = canvas.height / 2f
+        val cx = centerX.let { it - relativePositionOnScreen.width * it }
+        val cy = centerY.let { it - relativePositionOnScreen.height * it }
         val left = (cx - relativePositionOnScreen.size * bitmap.width / 2).toInt()
         val top = (cy - relativePositionOnScreen.size * bitmap.height / 2).toInt()
         val right = (cx + relativePositionOnScreen.size * bitmap.width / 2).toInt()
         val bottom = (cy + relativePositionOnScreen.size * bitmap.height / 2).toInt()
+        val rotation = Math.toDegrees(relativePositionOnScreen.rotation).toFloat()
+        canvas.rotate(rotation, centerX, centerY)
         canvas.drawBitmap(bitmap, null, Rect(left, top, right, bottom), paint.apply { alpha = relativePositionOnScreen.alpha })
+        canvas.rotate(-rotation, centerX, centerY)
     }
 
-    data class RelativePositionOnScreen(val width: Float, val height: Float, val size: Float, val alpha: Int)
+    data class RelativePositionOnScreen(val width: Float, val height: Float, val size: Float, val alpha: Int, val rotation: AngleInRads)
 
-    data class FieldOfView(
-            val horizontalViewAngle: AngleInRads,
-            val verticalViewAngle: AngleInRads)
+    data class FieldOfView(val horizontalViewAngle: AngleInRads, val verticalViewAngle: AngleInRads)
 
     private val paint = Paint()
 }

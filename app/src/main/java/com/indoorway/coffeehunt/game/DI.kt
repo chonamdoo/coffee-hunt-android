@@ -2,12 +2,10 @@ package com.indoorway.coffeehunt.game
 
 import android.app.Application
 import android.hardware.Camera
-import io.reactivex.Observable
-import io.reactivex.subjects.BehaviorSubject
-import io.reactivex.subjects.Subject
 import com.indoorway.coffeehunt.common.slowdown
 import com.indoorway.coffeehunt.game.ar.HeadingEvents
 import com.indoorway.coffeehunt.game.ar.PitchEvents
+import com.indoorway.coffeehunt.game.ar.RollEvents
 import com.indoorway.coffeehunt.game.camera.CameraWrapperImpl
 import com.indoorway.coffeehunt.game.camera.LiveStream
 import com.indoorway.coffeehunt.game.core.Game
@@ -16,8 +14,10 @@ import com.indoorway.coffeehunt.game.core.Position
 import com.indoorway.coffeehunt.game.core.applyAllGameRules
 import com.indoorway.coffeehunt.game.sensors.RxIndoorway
 import com.indoorway.coffeehunt.game.sensors.getBoards
-import com.indoorway.coffeehunt.game.sensors.getPitchEvents
 import com.indoorway.coffeehunt.game.sensors.getPlayerPositions
+import io.reactivex.Observable
+import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.subjects.Subject
 import java.util.concurrent.TimeUnit
 
 object DI {
@@ -40,9 +40,19 @@ object DI {
                         getBoards())
     }
 
-    val pitchEvents: PitchEvents by lazy { getPitchEvents(provideApplicationContext()).slowdown().share() }
+    val pitchEvents: PitchEvents by lazy {
+        RxIndoorway.getPitchObservable()
+                .slowdown()
+                .share()
+    }
 
-    val headings: Observable<Float> by lazy { RxIndoorway.getHeadingObservable().slowdown() }
+    val rollEvents: RollEvents by lazy {
+        RxIndoorway.getRollObservable()
+                .slowdown()
+                .share()
+    }
 
-    val provideHeadingObservableInRadians: () -> HeadingEvents = { headings.map { Math.toRadians(it.toDouble()) } }
+    val headings: Observable<Double> by lazy { RxIndoorway.getHeadingObservable().slowdown() }
+
+    val provideHeadingObservableInRadians: () -> HeadingEvents = { headings.map { Math.toRadians(it) } }
 }

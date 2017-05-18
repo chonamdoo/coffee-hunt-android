@@ -33,6 +33,9 @@
         <activity
             android:name=".game.GameActivity"
             android:screenOrientation="sensorPortrait" />
+        <activity
+            android:name=".game.CompassCalibrationActivity"
+            android:screenOrientation="sensorPortrait" />
     </application>
 
 </manifest>

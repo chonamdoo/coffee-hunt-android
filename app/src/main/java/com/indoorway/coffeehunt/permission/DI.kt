@@ -5,4 +5,5 @@ import android.app.Activity
 object DI {
 
     var providePermissionsIteractor: (Activity) -> PermissionsInteractor = { PermissionsInteractorImpl(it) }
+
 }
